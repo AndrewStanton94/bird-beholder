@@ -7,8 +7,15 @@ import {
 @Injectable()
 export class BearerTokenService
   implements OnApplicationBootstrap, BeforeApplicationShutdown {
+  private _bearerToken: string;
+
+  public get bearerToken(): string {
+    return this._bearerToken;
+  }
+
   onApplicationBootstrap(): string {
     console.log('This works');
+    this._bearerToken = 'A value';
     return 'Hello World!';
   }
 
