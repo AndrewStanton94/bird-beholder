@@ -5,5 +5,6 @@ import { BearerTokenService } from './bearerToken.service';
   imports: [],
   controllers: [],
   providers: [BearerTokenService],
+  exports: [BearerTokenService],
 })
 export class BearerTokenModule {}
