@@ -8,7 +8,7 @@ export class TwitterSearchController {
   ) {}
 
   @Get()
-  getHello(): string {
-    return this.twitterSearchService.getHello();
+  getHello(): Promise<JSON> {
+    return this.twitterSearchService.search();
   }
 }
