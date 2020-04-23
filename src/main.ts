@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+require('dotenv').config();
 
 declare const module: any;
 
