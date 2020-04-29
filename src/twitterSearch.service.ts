@@ -11,9 +11,16 @@ export class TwitterSearchService {
     return 'Hello Searchers!';
   }
 
-  search(): Promise<JSON> {
-    const user = 'CarlBovisNature';
-    const url = `https://api.twitter.com/1.1/search/tweets.json?q=from%3A${user}&result_type=mixed&count=2`;
+  searchUser(
+    user: string = 'CarlBovisNature',
+    filters: string = '[]',
+    count: number = 2,
+  ): Promise<JSON> {
+    const filterString = encodeURIComponent(JSON.parse(filters).join(' '));
+    const q = `from%3A${user}%20${filterString}`;
+    const queryString = `q=${q}&result_type=mixed&count=${count}`;
+    const url = `https://api.twitter.com/1.1/search/tweets.json?${queryString}`;
+
     return fetch(url, {
       headers: {
         Authorization: 'Bearer ' + this.bearerTokenService.bearerToken,
