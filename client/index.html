@@ -10,6 +10,7 @@
       }
 
       #tweets {
+        margin: 2rem;
         display: grid;
         grid-template-columns: 1fr 1fr;
       }
@@ -17,8 +18,22 @@
   </head>
   <body>
     <h1>BirdBeholder</h1>
+    <form id="searchOptions">
+      <input
+        type="text"
+        name="twitterUser"
+        id="twitterUser"
+        value="CarlBovisNature"
+      />
+      <select name="mediaSelection" id="mediaSelection">
+        <option value="media">Images and Videos</option>
+        <option value="images">Images</option>
+        <option value="native_video">Video</option>
+      </select>
+      <button id="search" type="submit">Search</button>
+    </form>
+
     <section id="tweets"></section>
   </body>
-  <script src="src.js">
-  </script>
+  <script src="src.js"></script>
 </html>
