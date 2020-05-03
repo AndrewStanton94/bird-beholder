@@ -1,69 +1,82 @@
-/** Search the twitter user and gets their recent tweets
- * @param  {string} user The user to search for
- * @param  {Array<string>} filters Search operators to add to the query
- * @param  {number} count=20 How many results to return
- * @returns {Promise<JSON>} Tweet data
+import { generateTweetMarkUp } from './attributeRenderers.js';
+
+/**
+ * @typedef {Object} VideoVariant
+ * @property {string} content_type
+ * @property {URL} url
  */
+
+/**
+ * @typedef {Object} VideoInfo
+ * @property {Array<VideoVariant>} variants
+ */
+
+/**
+ * @typedef {Object} Media
+ * @property  {string} type
+ * @property  {?VideoInfo} video_info
+ * @property  {URL} media_url_https
+ */
+
+/**
+ * @typedef {Object} Tweet The object representation of a tweet
+ * @property {string} text
+ * @property  {object} extended_entities
+ * @property  {Array<Media>} extended_entities.media
+ *
+ */
+
 const search = (user, filters, count = 20) => {
   const processedFilters = encodeURIComponent(JSON.stringify(filters));
-  return fetch(`/search/user/${user}/${processedFilters}/${count}`).then(res =>
+  return fetch(`/search/user/${user}/${processedFilters}/${count}`).then((res) =>
     res.json(),
   );
 };
 
 /** Builds the tweet elements
- * @param  {Array<object>} data List of tweets
+ * @param  {Array<Tweet>} tweets List of tweets
  * @param  {HTMLElement} container The element to add the tweet to
  * @param {boolean} emptyContainer=false Should the container be cleared first?
  */
-const renderTweets = (data, container, emptyContainer = false) => {
+const renderTweets = (tweets, container, emptyContainer = false) => {
   if (emptyContainer) {
     container.innerHTML = '';
   }
-  data.forEach(({ text, entities, extended_entities }) => {
-    if (
-      (entities && entities.media) ||
-      (extended_entities && extended_entities.media)
-    ) {
-      const media = extended_entities.media[0] || entities.media[0];
-      const { media_url_https, video_info } = media;
-
-      const tweetElem = document.createElement('article');
-      const tweetText = document.createElement('p');
-      const tweetImage = document.createElement('img');
-
-      tweetText.innerText = text;
-      tweetImage.src = media_url_https;
-
-      if (video_info) {
-        console.log(video_info);
-
-        const tweetVideo = document.createElement('video');
-        tweetVideo.src = video_info.variants[0].url;
-        tweetVideo.controls = true;
-        tweetElem.appendChild(tweetVideo);
-      } else {
-        tweetElem.appendChild(tweetImage);
-      }
-
-      tweetElem.appendChild(tweetText);
-      container.appendChild(tweetElem);
-    } else {
-      console.info("Doesn't have an image");
+  tweets.forEach((tweet) => {
+    console.log(tweet);
+    if (tweet && tweet.retweeted_status) {
+      tweet = tweet.retweeted_status;
+      console.log('Extracting tweet from retweet');
+      console.log(tweet);
     }
+    const elements = generateTweetMarkUp(tweet);
+    const tweetElem = document.createElement('article');
+    tweetElem.classList.add('tweet');
+
+    console.log('Elements to append: ', elements);
+    elements.forEach((elem) => {
+      tweetElem.appendChild(elem);
+    });
+    container.appendChild(tweetElem);
   });
 };
 
-const run = e => {
+/**
+ * @param  {Event} e Form Submission. Need to prevent default
+ */
+const run = (e) => {
   e.preventDefault();
   const searchUser = document.getElementById('twitterUser').value;
   const user = searchUser || 'CarlBovisNature';
 
-  const filters = ['-filter:retweets'];
+    const filters = ['-filter:retweets'];
 
   const mediaType = document.getElementById('mediaSelection').value;
-  console.log(mediaType);
+  console.log('media filter: ', mediaType);
   filters.push(`filter:${mediaType}`);
+
+  const clearResults = document.getElementById('clearPreviousResults').checked;
+  console.log('Will clear results: ', clearResults);
 
   search(user, filters).then(({ statuses }) => {
     const target = document.querySelector('#tweets');
@@ -72,7 +85,7 @@ const run = e => {
     const curatedStatuses = statuses.filter(({ truncated }) => !truncated);
     console.log(curatedStatuses);
 
-    renderTweets(curatedStatuses, target);
+    renderTweets(curatedStatuses, target, clearResults);
   });
 };
 

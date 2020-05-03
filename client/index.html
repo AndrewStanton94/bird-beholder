@@ -30,10 +30,18 @@
         <option value="images">Images</option>
         <option value="native_video">Video</option>
       </select>
+      <label>
+        Clear previous results
+        <input
+          type="checkbox"
+          name="clearPreviousResults"
+          id="clearPreviousResults"
+        />
+      </label>
       <button id="search" type="submit">Search</button>
     </form>
 
     <section id="tweets"></section>
   </body>
-  <script src="src.js"></script>
+  <script type="module" src="src.js"></script>
 </html>
