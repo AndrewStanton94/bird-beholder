@@ -5,31 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BirdBeholder</title>
     <style>
-      img {
-        max-width: 40vw;
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Oswald:wght@500&display=swap');
+      :root {
+        --margin-size: 2rem;
+        --column-count: 2;
+        /* Colours from https://pbs.twimg.com/media/EW9mQ5YX0AQ7Srb.jpg */
+        /* https://twitter.com/CarlBovisNature/status/1256335681472696320 */
+        /*  by @CarlBovisNature */
+        --background-color: #faeccf;
+        --primary-color: #8f2111;
+        --secondary-color: #e1ca49;
+        --text-color: #13130f;
+
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 1.5rem;
+        color: var(--text-color);
+      }
+      @media screen and (max-width: 500px) {
+        :root {
+          --margin-size: 0.5rem;
+          --column-count: 1;
+        }
+      }
+
+      .m-2 {
+        margin: var(--margin-size);
+      }
+
+      body {
+        background-color: var(--background-color);
+      }
+
+      h1 {
+        font-family: 'Oswald', sans-serif;
+      }
+
+      #searchOptions {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        line-height: 1.75;
+      }
+
+      #searchOptions * {
+        margin: 0.25rem;
+        font-size: 1rem;
+      }
+
+      #search {
+        min-width: 30%;
+        height: 2.5rem;
+        align-self: center;
+        background-color: var(--primary-color);
+        color: var(--secondary-color);
       }
 
       #tweets {
-        margin: 2rem;
         display: grid;
+        grid-template-columns: repeat(var(--column-count), 1fr);
+        column-gap: 1rem;
+        row-gap: 1rem;
+      }
+
+      article.tweet {
+        border: 1px solid var(--secondary-color);
+        padding: 1rem;
+      }
+
+      .imageContainer {
+        display: grid;
+      }
+
+      .imageContainer.multipleImages {
         grid-template-columns: 1fr 1fr;
+        row-gap: 1rem;
+        column-gap: 1rem;
+      }
+
+      img,
+      video {
+        max-width: 100%;
       }
     </style>
   </head>
   <body>
-    <h1>BirdBeholder</h1>
-    <form id="searchOptions">
-      <input
-        type="text"
-        name="twitterUser"
-        id="twitterUser"
-        value="CarlBovisNature"
-      />
-      <select name="mediaSelection" id="mediaSelection">
-        <option value="media">Images and Videos</option>
-        <option value="images">Images</option>
-        <option value="native_video">Video</option>
-      </select>
+    <header class="m-2">
+      <h1>BirdBeholder</h1>
+      <p>
+        A tweet viewer developed for me to play with the Twitter
+        <abbr
+          title="Application Programming Interface: How computers talk to each other"
+          >API</abbr
+        >
+        and enjoy the wildlife photography of
+        <a
+          href="https://twitter.com/CarlBovisNature"
+          rel="noopener noreferrer"
+          target="_blank"
+          >@CarlBovisNature</a
+        >
+      </p>
+    </header>
+    <form id="searchOptions" class="m-2">
+      <label>
+        Search for @
+        <input
+          type="text"
+          name="twitterUser"
+          id="twitterUser"
+          value="CarlBovisNature"
+        />
+      </label>
+      <label>
+        Show me
+        <select name="mediaSelection" id="mediaSelection">
+          <option value="media">Images and Videos</option>
+          <option value="images">Images</option>
+          <option value="native_video">Video</option>
+        </select>
+      </label>
       <label>
         Clear previous results
         <input
@@ -41,7 +135,7 @@
       <button id="search" type="submit">Search</button>
     </form>
 
-    <section id="tweets"></section>
+    <section id="tweets" class="m-2"></section>
   </body>
   <script type="module" src="src.js"></script>
 </html>
