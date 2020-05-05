@@ -12,9 +12,9 @@ export class TwitterSearchService {
   }
 
   searchUser(
-    user: string = 'CarlBovisNature',
-    filters: string = '[]',
-    count: number = 2,
+    user = 'CarlBovisNature',
+    filters = '[]',
+    count = 2,
   ): Promise<JSON> {
     const filterString = encodeURIComponent(JSON.parse(filters).join(' '));
     const q = `from%3A${user}%20${filterString}`;
@@ -25,6 +25,6 @@ export class TwitterSearchService {
       headers: {
         Authorization: 'Bearer ' + this.bearerTokenService.bearerToken,
       },
-    }).then(res => res.json()); // expecting a json response
+    }).then((res) => res.json()); // expecting a json response
   }
 }

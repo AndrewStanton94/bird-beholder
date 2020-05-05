@@ -31,8 +31,8 @@ export class BearerTokenService
       },
       body: 'grant_type=client_credentials',
     })
-      .then(res => res.json()) // expecting a json response
-      .then(json => {
+      .then((res) => res.json()) // expecting a json response
+      .then((json) => {
         console.log(json);
         if (json.token_type === 'bearer') {
           this._bearerToken = json.access_token;
@@ -42,7 +42,7 @@ export class BearerTokenService
     return 'Hello World!';
   }
 
-  beforeApplicationShutdown(signal: string = ''): string {
+  beforeApplicationShutdown(signal = ''): string {
     console.log('The end?', signal);
     return 'Byeeee';
   }
