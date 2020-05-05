@@ -28,7 +28,7 @@ import { generateTweetMarkUp } from './attributeRenderers.js';
 
 const search = (user, filters, count = 20) => {
   const processedFilters = encodeURIComponent(JSON.stringify(filters));
-  return fetch(`/search/user/${user}/${processedFilters}/${count}`).then((res) =>
+  return fetch(`./search/user/${user}/${processedFilters}/${count}`).then((res) =>
     res.json(),
   );
 };

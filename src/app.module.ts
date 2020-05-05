@@ -9,7 +9,7 @@ import { TwitterSearchModule } from './twitterSearch.module';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'client', 'bird-beholder'),
+      rootPath: join(__dirname, '..', 'client'),
     }),
     BearerTokenModule,
     TwitterSearchModule,
