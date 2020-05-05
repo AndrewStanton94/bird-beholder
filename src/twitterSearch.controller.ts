@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { TwitterSearchService } from './twitterSearch.service';
 
-@Controller('search')
+@Controller('bird-beholder/search')
 export class TwitterSearchController {
   constructor(private readonly twitterSearchService: TwitterSearchService) {}
 
